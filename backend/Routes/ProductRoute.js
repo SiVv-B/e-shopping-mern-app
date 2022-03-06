@@ -3,7 +3,7 @@ const {
   verifyToken,
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
-} = require("./verifyToken")
+} = require("./VerifyToken")
 
 const router = require("express").Router()
 
@@ -15,8 +15,11 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
   try {
     const savedProduct = await newProduct.save()
     res.status(200).json(savedProduct)
+    console.log('product created with success')
   } catch (err) {
     res.status(500).json(err)
+    console.log('err product creation',err)
+
   }
 })
 
@@ -31,8 +34,10 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
       { new: true }
     )
     res.status(200).json(updatedProduct)
+    console.log("product updated with success")
   } catch (err) {
     res.status(500).json(err)
+    console.log('err product update',err)
   }
 })
 
@@ -41,8 +46,10 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id)
     res.status(200).json("Product has been deleted...")
+    console.log('product deleted with success')
   } catch (err) {
     res.status(500).json(err)
+    console.log('err product delete',err)
   }
 })
 
@@ -51,8 +58,10 @@ router.get("/find/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id)
     res.status(200).json(product)
+    console.log("get one product = success")
   } catch (err) {
     res.status(500).json(err)
+    console.log('err get creation',err)
   }
 })
 
@@ -62,7 +71,6 @@ router.get("/", async (req, res) => {
   const qCategory = req.query.category
   try {
     let products
-
     if (qNew) {
       products = await Product.find().sort({ createdAt: -1 }).limit(1)
     } else if (qCategory) {
@@ -74,10 +82,11 @@ router.get("/", async (req, res) => {
     } else {
       products = await Product.find()
     }
-
     res.status(200).json(products)
+    console.log("get all products with success")
   } catch (err) {
     res.status(500).json(err)
+    console.log('err get all products',err)
   }
 })
 

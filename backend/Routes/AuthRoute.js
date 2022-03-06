@@ -17,8 +17,10 @@ router.post("/register", async (req, res) => {
   try {
     const savedUser = await newUser.save()
     res.status(201).json(savedUser)
+    console.log("success of registration")
   } catch (err) {
     res.status(500).json(err)
+    console.log("error of registration", err)
   }
 })
 
@@ -28,7 +30,7 @@ router.post('/login', async (req, res) => {
     try{
         const user = await User.findOne(
             {
-                userName: req.body.user_name
+                username: req.body.username
             }
         )
 
@@ -58,9 +60,11 @@ router.post('/login', async (req, res) => {
   
         const { password, ...others } = user._doc  
         res.status(200).json({...others, accessToken})
+        console.log("loggedIn with success")
 
     }catch(err){
         res.status(500).json(err)
+        console.log("err login",err)
     }
 
 })
