@@ -35,7 +35,7 @@ const Option = styled.option``
 
 function ProductList() {
   const location = useLocation()
-  //split the path split with / and take the second element
+  //split the link path with '/' and take the second element
   console.log('location:', location.pathname.split('/')[2])
   const cat = location.pathname.split('/')[2]
 
@@ -53,7 +53,6 @@ function ProductList() {
     })
   }
 
-
   const handleSort = (e) => {
     setSort(e.target.value)
   }
@@ -61,7 +60,7 @@ function ProductList() {
     <Container>
       <Navbar />
       <Announcement />
-      <Title>Dresses</Title>
+      <Title>{cat}</Title>
       <FilterContainer>
         <Filter>
           <FilterText>Filter products</FilterText>
@@ -86,13 +85,13 @@ function ProductList() {
         <Filter>
           <FilterText>Sort products</FilterText>
           <Select onChange={handleSort}>
-            <Option value='newest'>Newst</Option>
-            <Option value='asc'>Price (asc)</Option>
-            <Option value='desc'>Price (desc)</Option>
+            <Option value="newest">Newst</Option>
+            <Option value="asc">Price (asc)</Option>
+            <Option value="desc">Price (desc)</Option>
           </Select>
         </Filter>
       </FilterContainer>
-      <Products cat={cat} filters={filters} sort={sort}/>
+      <Products cat={cat} filters={filters} sort={sort} />
       <NewsLetter />
       <Footer />
     </Container>
