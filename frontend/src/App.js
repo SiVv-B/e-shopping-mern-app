@@ -1,5 +1,6 @@
 import React from 'react'
 import { render } from "react-dom"
+import { useSelector } from 'react-redux'
 import {
   BrowserRouter,
   Routes,
@@ -14,7 +15,7 @@ import Product from './pages/Product'
 import Register from './pages/Register'
 
 const App = () => {
-  const user = true
+  const user = useSelector((state)=> state.user.currentUser)
 
   return (
     <div className="App">

@@ -8,8 +8,8 @@ import { Add, Remove } from '@material-ui/icons'
 import mobile from '../responsive'
 import { useLocation } from 'react-router-dom'
 import { publicRequest } from '../requestMethods'
-import {addProduct} from '../redux/cartRedux'
-import {useDispatch} from "react-redux"
+import { addProduct } from '../redux/cartRedux'
+import { useDispatch } from 'react-redux'
 
 const Container = styled.div``
 
@@ -150,12 +150,10 @@ const Product = () => {
     }
   }
 
-const handleClick = ()=>{
-//update cart
-dispatch(addProduct({...product, quantity, color, size})
-)
-
-}
+  const handleClick = () => {
+    //update items in cart
+    dispatch(addProduct({ ...product, quantity, color, size }))
+  }
   return (
     <Container>
       <NavBar />
@@ -199,7 +197,7 @@ dispatch(addProduct({...product, quantity, color, size})
               <Amount>{quantity}</Amount>
               <Add onClick={() => handleQuantity('inc')} />
             </AmountContainer>
-            <Button onClick={handleClick} >ADD TO CART</Button>
+            <Button onClick={handleClick}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
