@@ -9,7 +9,8 @@ export const publicRequest = axios.create({
 
 //URL that requires a TOKEN
 //for that let's create a token first:
-const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMjRiZjFiODZhOGY4OTBmNzVmYTg0YSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0NjY1NDUwMywiZXhwIjoxNjQ2OTEzNzAzfQ.i8dWayeYym4DR8mnsLpoj9ceeMOMJn_OK3GZtcdIHFc"
+const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.accessToken
+
 
 export const userRequest = axios.create({
     baseURL: BASE_URL,
