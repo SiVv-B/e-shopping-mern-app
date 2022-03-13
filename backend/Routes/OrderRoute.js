@@ -70,13 +70,21 @@ router.get('/', verifyTokenAndAdmin, async (req, res) => {
 // GET MONTHLY INCOME
 
 router.get('/income', verifyTokenAndAdmin, async (req, res) => {
+  //for admin dashboard, in featuredInfo
+  const productId = req.query.pid
   const date = new Date()
   const lastMonth = new Date(date.setMonth(date.getMonth() - 1))
   const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1))
 
   try {
     const income = await Order.aggregate([
-      { $match: { createdAt: { $gte: previousMonth } } },
+      { $match: { createdAt: { $gte: previousMonth },
+    //this is how to create a conditionnal object (it"s for the admin dashboard) 
+  //if there is a product ID create a new condition: 
+  ...(productId && {
+    products : { $elementMatch : {productId}},
+  })
+  } },
       {
         $project: {
           month: { $month: '$createdAt' },
