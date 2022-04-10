@@ -1,9 +1,11 @@
+
+import React from 'react'
 import {
   FavoriteBorderOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
 } from '@material-ui/icons'
-import React, { useEffect, useState } from 'react'
+
 import styled from 'styled-components'
 import mobile from '../responsive'
 import { Link } from 'react-router-dom'
@@ -69,6 +71,7 @@ const Icon = styled.div`
   }
 `
 const Product = ({ item }) => {
+
   return (
     <Container>
       <Circle />

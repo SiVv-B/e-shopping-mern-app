@@ -1,0 +1,26 @@
+{
+  "name": "e-shopping-mern-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Server.js",
+  "scripts": {
+    "server": "cd backend && nodemon Server.js",
+    "client": "cd frontend && npm start",
+    "start": "concurrently \"npm run server\" \"npm run client\""  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SiVv-B/e-shopping-mern-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SiVv-B/e-shopping-mern-app/issues"
+  },
+  "homepage": "https://github.com/SiVv-B/e-shopping-mern-app#readme",
+  "dependencies": {
+    "concurrently": "^7.1.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.10"
+  }
+}

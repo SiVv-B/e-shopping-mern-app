@@ -1,4 +1,6 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+
 import Announcement from '../components/Announcement'
 import Categories from '../components/Categories'
 import Footer  from '../components/Footer'
@@ -8,8 +10,10 @@ import Products from '../components/Products'
 import Slider from '../components/Slider'
 
 function Home() {
+
   return (
     <div>
+      
         <Announcement/>
         <Navbar/>
         <Slider/>

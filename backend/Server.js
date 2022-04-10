@@ -18,8 +18,19 @@ mongoose
     console.log(err)
   })
 
-  app.use(cors())
+
   app.use(express.json())
+  
+  //what cors will authorize to access to the requests once we are in frontend :D :
+const corsOptions = {
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+  'allowedHeaders': ['sessionId', 'Content-Type'],
+  'exposedHeaders': ['sessionId'],
+  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  'preflightContinue': false
+}
+app.use(cors(corsOptions));
   app.use('/api/user', userRoute)
   app.use('/api/auth', authRoute)
   app.use("/api/products", productRoute)

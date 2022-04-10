@@ -1,4 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router'
+import { useLocation } from 'react-router-dom'
+import { publicRequest } from '../requestMethods'
+import {
+  getproducts,
+  getOneproduct,
+  updateproduct,
+} from '../redux/Actions/ProductAction'
+import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import NavBar from '../components/Navbar'
 import Announcemet from '../components/Announcement'
@@ -6,10 +15,6 @@ import NewsLetter from '../components/NewsLetter'
 import Footer from '../components/Footer'
 import { Add, Remove } from '@material-ui/icons'
 import mobile from '../responsive'
-import { useLocation } from 'react-router-dom'
-import { publicRequest } from '../requestMethods'
-import { addProduct } from '../redux/cartRedux'
-import { useDispatch } from 'react-redux'
 
 const Container = styled.div``
 
@@ -109,7 +114,7 @@ const Amount = styled.span`
 `
 
 const Button = styled.button`
-  padding: 15px;
+   padding: 15px;
   border: 2px solid teal;
   background-color: white;
   cursor: pointer;
@@ -119,41 +124,52 @@ const Button = styled.button`
   }
 `
 
-const Product = () => {
-  //split the path split with / and take the second element
-  const location = useLocation()
-  const id = location.pathname.split('/')[2]
-  //display the single product details page
-  //for that we need to fetch the data
-  const [product, setProduct] = useState({})
-  const [quantity, setQuantity] = useState(1)
-  const [color, setColor] = useState('')
-  const [size, setSize] = useState('')
-
+const ProductPage = () => {
   const dispatch = useDispatch()
+  const { id } = useParams()
+
+  //split the path split with / and take the second element
+  /*
+    const location = useLocation()
+   const id = location.pathname.split('/')[2] */
+
+  const product = useSelector((state) => state.ProductReducer.products)
+
+  console.log('product page', product)
+  useEffect(() => {
+    dispatch(getproducts())
+  }, [])
 
   useEffect(() => {
-    const getProduct = async () => {
-      try {
-        const res = await publicRequest.get('/products/find/' + id)
-        setProduct(res.data)
-      } catch {}
-    }
-    getProduct()
+    dispatch(getOneproduct(id))
   }, [id])
+
+  if (!product) {
+    return 'loading'
+  }
+
+  const [quantity, setQuantity] = useState(1)
+  const [price, setPrice] = useState({})
+
+  const [color, setColor] = useState('')
+  const [size, setSize] = useState('')
 
   const handleQuantity = (type) => {
     if (type === 'dec') {
       quantity > 1 && setQuantity(quantity - 1)
+      
     } else {
       setQuantity(quantity + 1)
+      
     }
+    setPrice(price * quantity)
   }
 
   const handleClick = () => {
     //update items in cart
-    dispatch(addProduct({ ...product, quantity, color, size }))
+    dispatch(updateproduct({ ...product, price, quantity, color, size }))
   }
+
   return (
     <Container>
       <NavBar />
@@ -165,8 +181,14 @@ const Product = () => {
         <InfoContainer>
           <Title>{product && product.title}</Title>
           <Desc>{product && product.desc}</Desc>
-          <Price>$ {product && product.price}</Price>
+                  
+             <Price  >$ 
+            { product && product.price }
+          </Price> 
+          
+
           <FilterContainer>
+           
             <Filter>
               <FilterTitle>Color</FilterTitle>
 
@@ -207,4 +229,4 @@ const Product = () => {
   )
 }
 
-export default Product
+export default ProductPage

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { login } from '../redux/Actions/AuthAction'
 import styled from 'styled-components'
-import { login } from '../redux/apiCalls'
 import mobile from '../responsive'
-import {useDispatch, useSelector} from "react-redux"
 
 const Container = styled.div`
   width: 100vw;
@@ -52,7 +53,7 @@ const Button = styled.button`
   cursor: pointer;
   margin-bottom: 10px;
   /* if login user form is empty=disabled, then */
-  &:disabled{
+  &:disabled {
     color: green;
     cursor: not-allowed;
   }
@@ -65,37 +66,49 @@ const Link = styled.a`
   cursor: pointer;
 `
 const Error = styled.span`
-color: red;
+  color: red;
 `
 
 const Login = () => {
   //call the apiCalls login function
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const navigate = useNavigate()
   const dispatch = useDispatch()
-  const {isFetching, error} = useSelector((state)=> state.user)
-  
-  const handleLogin = (e)=>{
-    e.preventDefault()
-    login(dispatch, {username, password})
+
+  const [user, setUser] = useState({ username: '', password: '' })
+
+  const handleChange = (event) => {
+    setUser({ ...user, [event.target.id]: event.target.value })
   }
+  const onSubmit = (event) => {
+    event.preventDefault()
+    dispatch(login(user, navigate))
+    setUser({ username: '', password: '' })
+  }
+
   return (
     <Container>
       <Wrapper>
         <Title>SIGN IN</Title>
-        <Form>
+        <Form onSubmit={onSubmit}>
           <Input
             placeholder="username"
-            onChange={(e) => setUsername(e.target.value)}
+            type="text"
+            name="username"
+            id="username"
+            onChange={handleChange}
+            value={user.username}
           />
           <Input
             placeholder="password"
-            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            name="password"
+            id="password"
+            onChange={handleChange}
+            value={user.password}
           />
-          <Button onClick={handleLogin}
-          disabled = {isFetching}
-           >LOGIN</Button>
-           {error&& <Error>Something went wrong ...</Error>}
+          <Button>LOGIN</Button>
+          {/*            {error&& <Error>Something went wrong ...</Error>}
+           */}
           <Link>FORGOT PASSWORD?</Link>
           <Link>CREATE A NEW ACCOUNT</Link>
         </Form>

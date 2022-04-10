@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { getproducts } from '../redux/Actions/ProductAction'
+import { useParams } from 'react-router'
 import styled from 'styled-components'
 import { popularProducts } from '../data'
 import Product from './Product'
@@ -14,24 +17,25 @@ const Products = ({ cat, filters, sort }) => {
   //fetch data  (1. create ustate and define products
   //             2. use useEffect, then when you use filtredPRoduct it will display popularProducts.map
   //)
-  const [products, setProducts] = useState([])
-  const [filtredProducts, setFiltredProducts] = useState([])
 
-  //when the cat changes, run useEffect:
+  const dispatch = useDispatch()
+
+  const [filtredProducts, setFiltredProducts] = useState([])
+  const { location } = useParams()
+
+  const productlist = useSelector((state) => state.ProductReducer.products)
+
+  /* Get products */
+    //when the cat changes, run useEffect:
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const res = await axios.get(
-          cat
-            ? `http://localhost:5000/api/products?category=${cat}`
-            : `http://localhost:5000/api/products`,
-        )
-        setProducts(res.data)
-      } catch (error) {}
-    }
-    //call the function
-    getProducts()
+    dispatch(getproducts(cat))
   }, [cat])
+
+  console.log(productlist)
+
+  if (!productlist) {
+    return 'loading'
+  }
 
   //set filter products
   useEffect(() => {
@@ -41,13 +45,13 @@ const Products = ({ cat, filters, sort }) => {
     //once that done, we match them with the products items.if the itemps include the filters they will be displayed
     cat &&
       setFiltredProducts(
-        products.filter((item) =>
+        productlist.filter((item) =>
           Object.entries(filters).every(([key, value]) =>
             item[key].includes(value),
           ),
         ),
       )
-  }, [cat, filters, products])
+  }, [cat, filters, productlist])
 
   //Sort items:
   useEffect(() => {
@@ -73,10 +77,11 @@ const Products = ({ cat, filters, sort }) => {
           else, diplay 5 items on the home page*/}
 
       {cat
-        ? filtredProducts.map((item) => <Product item={item} key={item.id} />)
-        : products
+        ? filtredProducts.map((item) => <Product  item={item} key={item.id} />)
+        : productlist
             .slice(0, 5)
             .map((item) => <Product item={item} key={item.id} />)}
+
     </Container>
   )
 }
