@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch , useSelector} from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { createCart, getOnecart, getcarts, updatecart, deletecart,   } from '../redux/Actions/CartAction'
-
+import {getproducts} from '../redux/Actions/ProductAction'
 import { Add, Remove } from '@material-ui/icons'
 import styled from 'styled-components'
 import Announcement from '../components/Announcement'
@@ -10,6 +10,7 @@ import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import mobile from '../responsive'
 import StripeCheckout from 'react-stripe-checkout'
+import{addProduct} from "../redux/Reducer/cartRedux"
 
 const KEY = process.env.STRIPE_KEY
 
@@ -164,15 +165,15 @@ const Cart = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const cart = useSelector((state) => state.CartReducer.carts)
-  const product = useSelector((state) => state.ProductReducer.products)
+  const products = useSelector((state) => state.CartRedux.products)
 
-  console.log(product)
   useEffect(() => {
-    dispatch(getcarts())
-  }, [getcarts])
+    dispatch(addProduct(products))
+  }, [])
 
+  console.log("products from cart",products)
 
-  console.log("cart",cart)
+  console.log("cart from cart",cart)
   return (
     <Container>
       <Navbar />
@@ -189,8 +190,7 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            {cart.products 
-              ? cart.products.map((product) => (
+            {cart? products.map((product) => (
                   <Product>
                     <ProductDetail>
                       <Image src={product.img} />
@@ -228,8 +228,8 @@ const Cart = () => {
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-{/*               <SummaryItemPrice>$ {cart.total} </SummaryItemPrice>
- */}            </SummaryItem>
+              <SummaryItemPrice>$ {cart.total} </SummaryItemPrice>
+             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
               <SummaryItemPrice>$ 5.90</SummaryItemPrice>
@@ -240,10 +240,10 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-{/*               <SummaryItemPrice>$ {cart.total} </SummaryItemPrice>
- */}            </SummaryItem>
+              <SummaryItemPrice>$ {cart.total} </SummaryItemPrice>
+            </SummaryItem>
 
-            {/* Here will be the stripe checkout code at 1:10:08 */}
+            {/*  From here need to work on stripe: checkout code at 1:10:08 */}
             <Button>CHECKOUT NOW</Button>
           </Summary>
         </Bottom>

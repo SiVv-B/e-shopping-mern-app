@@ -14,6 +14,7 @@ export const GET_ALL_PRODUCTS="GET_ALL_PRODUCTS"
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT"
 export const DELETE_PRODUCT= "DELETE_PRODUCT"
 
+export const ADD_PODUCT = "ADD_PODUCT"
 export const CREATE_CART = "CREATE_CART"
 export const GET_CART="GET_CART"
 export const GET_ALL_CARTS="GET_ALL_CARTS"

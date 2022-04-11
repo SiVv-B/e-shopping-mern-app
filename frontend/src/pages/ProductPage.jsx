@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import { useLocation } from 'react-router-dom'
-import { publicRequest } from '../requestMethods'
 import {
   getproducts,
   getOneproduct,
-  updateproduct,
 } from '../redux/Actions/ProductAction'
+import{addProduct} from "../redux/Reducer/cartRedux"
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import NavBar from '../components/Navbar'
@@ -114,7 +112,7 @@ const Amount = styled.span`
 `
 
 const Button = styled.button`
-   padding: 15px;
+  padding: 15px;
   border: 2px solid teal;
   background-color: white;
   cursor: pointer;
@@ -123,6 +121,7 @@ const Button = styled.button`
     background-color: #f8f4f4;
   }
 `
+
 
 const ProductPage = () => {
   const dispatch = useDispatch()
@@ -157,17 +156,15 @@ const ProductPage = () => {
   const handleQuantity = (type) => {
     if (type === 'dec') {
       quantity > 1 && setQuantity(quantity - 1)
-      
     } else {
       setQuantity(quantity + 1)
-      
     }
     setPrice(price * quantity)
   }
 
   const handleClick = () => {
-    //update items in cart
-    dispatch(updateproduct({ ...product, price, quantity, color, size }))
+    //update items in cart by adding  products 
+    dispatch(addProduct({ ...product, quantity, color, size }))
   }
 
   return (
@@ -181,14 +178,10 @@ const ProductPage = () => {
         <InfoContainer>
           <Title>{product && product.title}</Title>
           <Desc>{product && product.desc}</Desc>
-                  
-             <Price  >$ 
-            { product && product.price }
-          </Price> 
-          
+
+          <Price>${product.price * quantity}</Price>
 
           <FilterContainer>
-           
             <Filter>
               <FilterTitle>Color</FilterTitle>
 

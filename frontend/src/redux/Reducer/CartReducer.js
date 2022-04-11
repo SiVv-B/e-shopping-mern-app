@@ -1,40 +1,38 @@
 import {
-    CREATE_CART,
-    GET_ALL_CARTS,
-    UPDATE_CART,
-    GET_CART,
-    DELETE_CART,
-  } from '../Actions/ActionTypes'
-  const initialState = {
-    products: [],
-    product: null,
-    updatedproduct: null,
-    message: ' hello',
-    loading: true,
-    isAuth: false,
+  ADD_PODUCT,
+  CREATE_CART,
+  GET_ALL_CARTS,
+  UPDATE_CART,
+  GET_CART,
+  DELETE_CART,
+} from '../Actions/ActionTypes'
+const initialState = {
+  carts: [],
+  cart: null,
+  updatedcart: null,
+  message: ' hello',
+}
+const CartReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case CREATE_CART:
+      return {
+        ...state, cart: action.payload.newcart,
+      }
+    case GET_ALL_CARTS:
+      return { ...state, carts: action.payload }
+    case UPDATE_CART:
+      return {
+        ...state, carts: action.payload 
+      }
+    case GET_CART:
+      return {
+        ...state, cart: action.payload,
+        message: 'get one cart works',
+      }
+    case DELETE_CART:
+      return { ...state, cart: action.payload }
+    default:
+      return state
   }
-  const CartReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case CREATE_CART:
-        return {
-          ...state,
-          product: action.payload.newproduct,
-        }
-      case GET_ALL_CARTS:
-        return { ...state, products: action.payload }
-      case UPDATE_CART:
-        return { ...state, product: action.payload }
-      case GET_CART:
-        return {
-          ...state,
-          product: action.payload,
-          message: 'get one product works',
-        }
-      case DELETE_CART:
-        return { ...state, product: action.payload }
-      default:
-        return state
-    }
-  }
-  export default CartReducer
-  
+}
+export default CartReducer

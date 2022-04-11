@@ -43,7 +43,7 @@ const Products = ({ cat, filters, sort }) => {
     //take each item and check whether they include filters or not
     //for that we take each filter and look each key (example color,size) and value (ex yellow, XL)
     //once that done, we match them with the products items.if the itemps include the filters they will be displayed
-    cat &&
+    cat&&
       setFiltredProducts(
         productlist.filter((item) =>
           Object.entries(filters).every(([key, value]) =>
